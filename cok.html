@@ -133,35 +133,6 @@
         }
       }
 
-      /* Preloader styles */
-      .preloader {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 154, 158, 0.9);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        transition: opacity 0.5s ease-out;
-      }
-
-      .preloader.hidden {
-        opacity: 0;
-        pointer-events: none;
-      }
-
-      .loader {
-        width: 80px;
-        height: 80px;
-        border: 8px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top-color: #ff5e87;
-        animation: spin 1s ease-in-out infinite;
-      }
-
       @keyframes spin {
         to {
           transform: rotate(360deg);
@@ -306,16 +277,11 @@
     </style>
   </head>
   <body>
-    <!-- Preloader -->
-    <div class="preloader" id="preloader">
-      <div class="loader"></div>
-    </div>
-
     <div class="container">
       <h1>Sadece Çok Mu? 😭</h1>
 
       <div class="video-container">
-        <video id="myVideo" autoplay loop muted>
+        <video id="myVideo" autoplay loop controls>
           <source src="B.mp4" type="video/mp4" />
           Tarayıcınız video elementini desteklemiyor.
         </video>
@@ -329,12 +295,7 @@
     <div id="hearts-container"></div>
 
     <script>
-      // Preloader handling
       document.addEventListener("DOMContentLoaded", function () {
-        // Show preloader
-        const preloader = document.getElementById("preloader");
-        const video = document.getElementById("myVideo");
-
         // Check if we're coming from question2.html with return=true parameter
         const urlParams = new URLSearchParams(window.location.search);
         const returnParam = urlParams.get("return");
@@ -370,23 +331,19 @@
         // Create hearts periodically
         setInterval(createHeart, 300);
 
-        // Hide preloader after video is loaded and start playing
-        video.addEventListener("canplaythrough", function () {
-          // Unmute video after loading to enable sound
-          video.muted = false;
-
-          // Make sure video plays
-          video.play().catch((e) => {
-            console.log("Autoplay prevented:", e);
-            // If autoplay with sound is blocked, we'll add a play button or message
-            video.muted = true;
+        // Make sure video plays with sound
+        const video = document.getElementById("myVideo");
+        video.play().catch((error) => {
+          console.log("Video autoplay was prevented:", error);
+          // Add a button to play video manually if autoplay is blocked
+          const playButton = document.createElement("button");
+          playButton.textContent = "Play Video";
+          playButton.className = "play-button";
+          playButton.onclick = () => {
             video.play();
-          });
-
-          // Hide preloader with a small delay
-          setTimeout(() => {
-            preloader.classList.add("hidden");
-          }, 500);
+            playButton.remove();
+          };
+          document.querySelector(".video-container").appendChild(playButton);
         });
       });
     </script>
