@@ -167,6 +167,137 @@
           transform: rotate(360deg);
         }
       }
+
+      /* Responsive styles */
+      @media (max-width: 768px) {
+        .container {
+          padding: 1.5rem;
+          width: 95%;
+          max-width: 550px;
+        }
+
+        h1 {
+          font-size: 2.5rem;
+          margin-bottom: 1.2rem;
+        }
+
+        .video-container {
+          margin: 1.2rem auto;
+        }
+
+        .button {
+          font-size: 1.3rem;
+          padding: 0.7rem 1.5rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 1.2rem;
+          width: 95%;
+          max-width: none;
+        }
+
+        h1 {
+          font-size: 2rem;
+          margin-bottom: 1rem;
+        }
+
+        .video-container {
+          margin: 1rem auto;
+          border-radius: 10px;
+        }
+
+        video {
+          border-radius: 8px;
+        }
+
+        .button {
+          font-size: 1.2rem;
+          padding: 0.6rem 1.4rem;
+          margin-top: 1rem;
+        }
+
+        .heart {
+          font-size: 15px;
+        }
+      }
+
+      /* Styles for large screens */
+      @media (min-width: 1366px) {
+        .container {
+          max-width: 800px;
+          padding: 2.5rem;
+        }
+
+        h1 {
+          font-size: 3.5rem;
+        }
+
+        .video-container {
+          margin: 2rem auto;
+        }
+
+        .button {
+          font-size: 1.7rem;
+          padding: 1rem 2rem;
+        }
+      }
+
+      /* Styles for 1920x1080 screens */
+      @media (min-width: 1920px) {
+        .container {
+          max-width: 900px;
+          padding: 3rem;
+        }
+
+        h1 {
+          font-size: 4rem;
+          margin-bottom: 2rem;
+        }
+
+        .video-container {
+          margin: 2.5rem auto;
+          max-width: 800px;
+        }
+
+        .button {
+          font-size: 2rem;
+          padding: 1.2rem 2.5rem;
+          margin-top: 2rem;
+        }
+
+        .heart {
+          font-size: 25px;
+        }
+      }
+
+      /* Styles for ultra-wide screens */
+      @media (min-width: 2560px) {
+        .container {
+          max-width: 1100px;
+          padding: 4rem;
+        }
+
+        h1 {
+          font-size: 5rem;
+        }
+
+        .video-container {
+          margin: 3rem auto;
+          max-width: 1000px;
+        }
+
+        .button {
+          font-size: 2.5rem;
+          padding: 1.5rem 3rem;
+          margin-top: 2.5rem;
+        }
+
+        .heart {
+          font-size: 35px;
+        }
+      }
     </style>
   </head>
   <body>
