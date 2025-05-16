@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seni Seviyor Muyum?</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .answers {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 2rem 0;
+        align-items: center;
+      }
+
+      .answer-btn {
+        width: 80%;
+        max-width: 400px;
+        font-family: "Dancing Script", cursive;
+        font-size: 1.5rem;
+        padding: 0.8rem 1.8rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        background: white;
+        color: #ff758c;
+        border: 2px solid #ff758c;
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .answer-btn:hover {
+        transform: translateY(-5px) scale(1.03);
+        box-shadow: 0 7px 20px rgba(255, 118, 140, 0.4);
+        background: linear-gradient(45deg, #ff758c, #ff7eb3);
+        color: white;
+      }
+
+      .hello-kitty {
+        font-size: 1.8rem;
+      }
+
+      .arm {
+        display: inline-block;
+        font-size: 1.5rem;
+        transform-origin: center;
+      }
+
+      .left-arm {
+        transform: rotate(30deg);
+        margin-right: 5px;
+      }
+
+      .right-arm {
+        transform: rotate(-30deg);
+        margin-left: 5px;
+      }
+
+      #option3 {
+        background-color: rgba(255, 255, 255, 0.7);
+        border: 2px solid #ff758c;
+      }
+
+      #option3:hover {
+        background: rgba(255, 117, 140, 0.1);
+        color: #ff5e87;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="particles"></div>
+
+    <div class="container">
+      <div class="timer" id="timer"></div>
+
+      <div class="love-card">
+        <h1>Peki beni ne kadar çok seviyorsun bakachan?</h1>
+        <div class="answers">
+          <button id="option1" class="answer-btn">
+            <span class="arm left-arm">👐</span>
+            <span class="hello-kitty">😺</span>
+            <span class="arm right-arm">👐</span>
+          </button>
+          <button id="option2" class="answer-btn">Çok</button>
+          <button id="option3" class="answer-btn">
+            Sevmiyorum ki (önerilmez)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="hearts-container"></div>
+
+    <script>
+      // Timer functionality - Show time since 23.08.2021 22:08
+      const startDate = new Date("2021-08-23T22:08:00").getTime();
+      const timerElem = document.getElementById("timer");
+
+      function updateTimer() {
+        const now = Date.now();
+        const diff = now - startDate; // Time difference in milliseconds
+
+        // Calculate days, hours, minutes, seconds
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        // Update timer element
+        timerElem.innerHTML = `
+                <span>${days} gün, </span>
+                <span>${hours} saat, </span>
+                <span>${minutes} dakika, </span>
+                <span>${seconds} saniye </span>
+                <span>geçti...</span>
+            `;
+      }
+
+      // Initial timer update and set interval
+      updateTimer();
+      setInterval(updateTimer, 1000);
+
+      // Create background particles
+      function createParticles() {
+        const particlesContainer = document.querySelector(".particles");
+        for (let i = 0; i < 50; i++) {
+          const particle = document.createElement("div");
+          particle.style.position = "absolute";
+          particle.style.width = `${Math.random() * 5 + 2}px`;
+          particle.style.height = particle.style.width;
+          particle.style.background = `rgba(255, ${
+            Math.random() * 100 + 155
+          }, ${Math.random() * 100 + 155}, ${Math.random() * 0.5 + 0.3})`;
+          particle.style.borderRadius = "50%";
+          particle.style.left = `${Math.random() * 100}vw`;
+          particle.style.top = `${Math.random() * 100}vh`;
+          particle.style.boxShadow = "0 0 10px rgba(255, 105, 180, 0.5)";
+          particle.style.animation = `float ${
+            Math.random() * 10 + 10
+          }s linear infinite`;
+          particle.style.animationDelay = `-${Math.random() * 10}s`;
+          particlesContainer.appendChild(particle);
+        }
+      }
+
+      // Check if we're coming back from the negative page
+      function checkReturnVisit() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnVisit = urlParams.get("return");
+        const hideCok = urlParams.get("hidecok");
+
+        if (returnVisit === "true") {
+          // Hide the third option
+          const option3 = document.getElementById("option3");
+          if (option3) {
+            option3.style.display = "none";
+          }
+        }
+
+        if (hideCok === "true") {
+          // Hide the Çok button
+          const option2 = document.getElementById("option2");
+          if (option2) {
+            option2.style.display = "none";
+          }
+        }
+      }
+
+      // Handle button clicks
+      document.getElementById("option1").addEventListener("click", function () {
+        window.location.href = "success.html";
+      });
+
+      document.getElementById("option2").addEventListener("click", function () {
+        // Hide the Çok button when clicked
+        this.style.display = "none";
+
+        // Check if return parameter exists
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnParam = urlParams.get("return");
+
+        // Navigate to cok.html after a short delay, with return parameter if it exists
+        setTimeout(() => {
+          if (returnParam === "true") {
+            window.location.href = "cok.html?return=true";
+          } else {
+            window.location.href = "cok.html";
+          }
+        }, 300);
+      });
+
+      document.getElementById("option3").addEventListener("click", function () {
+        // Check if hidecok parameter exists (meaning we already visited cok.html)
+        const urlParams = new URLSearchParams(window.location.search);
+        const hideCok = urlParams.get("hidecok");
+
+        if (hideCok === "true") {
+          window.location.href = "negative.html?hidecok=true";
+        } else {
+          window.location.href = "negative.html";
+        }
+      });
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        createParticles();
+        checkReturnVisit();
+      });
+    </script>
+  </body>
+</html>

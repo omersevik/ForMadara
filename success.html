@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aşkımıza Hoşgeldin!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        overflow: hidden;
+        text-align: center;
+        color: #333;
+      }
+
+      .success-container {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 3rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(255, 105, 180, 0.3);
+        max-width: 700px;
+        width: 90%;
+        animation: fade-in 1s ease-out forwards;
+        position: relative;
+        z-index: 1;
+      }
+
+      h1 {
+        font-family: "Dancing Script", cursive;
+        color: #ff5e87;
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      p {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+
+      .hearts {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .heart {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff5e87' d='M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z'/%3E%3C/svg%3E")
+          no-repeat center/contain;
+        opacity: 0;
+        animation: float-heart 6s linear forwards;
+      }
+
+      .timer {
+        font-family: "Poppins", sans-serif;
+        font-size: 1.2rem;
+        color: #ff5e87;
+        background: rgba(255, 255, 255, 0.6);
+        padding: 1rem 1.5rem;
+        border-radius: 15px;
+        margin: 1.5rem auto;
+        text-align: center;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
+        max-width: 90%;
+        display: inline-block;
+        animation: pulse 2s infinite;
+      }
+
+      .timer span {
+        font-weight: bold;
+      }
+
+      .time-message {
+        font-family: "Dancing Script", cursive;
+        font-size: 1.4rem;
+        color: #ff5e87;
+        margin: 1.5rem 0;
+        font-weight: bold;
+        text-shadow: 1px 1px 3px rgba(255, 105, 180, 0.3);
+      }
+
+      .date {
+        font-size: 1.2rem;
+        color: #ff5e87;
+        margin-top: 2rem;
+        font-weight: bold;
+        padding: 0.8rem;
+        border: 2px dashed rgba(255, 94, 135, 0.5);
+        border-radius: 10px;
+        display: inline-block;
+      }
+
+      .button {
+        display: inline-block;
+        background: linear-gradient(45deg, #ff758c, #ff7eb3);
+        color: white;
+        font-family: "Dancing Script", cursive;
+        font-size: 1.5rem;
+        padding: 0.8rem 1.8rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none;
+        margin-top: 1.5rem;
+        box-shadow: 0 4px 15px rgba(255, 118, 140, 0.4);
+        transition: all 0.3s;
+      }
+
+      .button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 7px 20px rgba(255, 118, 140, 0.6);
+      }
+
+      .heart-border {
+        position: absolute;
+        top: -15px;
+        left: -15px;
+        right: -15px;
+        bottom: -15px;
+        border: 2px solid rgba(255, 94, 135, 0.3);
+        border-radius: 25px;
+        z-index: -1;
+        animation: pulse-border 3s infinite;
+      }
+
+      .floating-hearts {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .floating-heart {
+        position: absolute;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff5e87' d='M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z'/%3E%3C/svg%3E")
+          no-repeat center/contain;
+        opacity: 0.7;
+        animation: float-around 15s linear infinite;
+      }
+
+      /* Video container styles */
+      .video-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto 2rem;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(255, 105, 180, 0.5);
+        position: relative;
+      }
+
+      video {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 15px;
+      }
+
+      /* Preloader styles */
+      .preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 154, 158, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+
+      .preloader.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .loader {
+        width: 80px;
+        height: 80px;
+        border: 8px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #ff5e87;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes float-heart {
+        0% {
+          opacity: 0;
+          transform: scale(0) rotate(0deg);
+        }
+        10% {
+          opacity: 1;
+          transform: scale(1) rotate(0deg);
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-800px) scale(0.2) rotate(360deg);
+        }
+      }
+
+      @keyframes float-around {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+          transform: translate(100px, -150px) rotate(90deg);
+        }
+        50% {
+          transform: translate(200px, 50px) rotate(180deg);
+        }
+        75% {
+          transform: translate(100px, 200px) rotate(270deg);
+        }
+        100% {
+          transform: translate(0, 0) rotate(360deg);
+        }
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.03);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes pulse-border {
+        0% {
+          border-color: rgba(255, 94, 135, 0.3);
+        }
+        50% {
+          border-color: rgba(255, 94, 135, 0.7);
+        }
+        100% {
+          border-color: rgba(255, 94, 135, 0.3);
+        }
+      }
+
+      @keyframes float-heart-left {
+        0% {
+          opacity: 0;
+          transform: translate(0, 0) scale(0) rotate(30deg);
+        }
+        10% {
+          opacity: 1;
+          transform: translate(0, 0) scale(1) rotate(30deg);
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translate(400px, -800px) scale(0.2) rotate(390deg);
+        }
+      }
+
+      @keyframes float-heart-right {
+        0% {
+          opacity: 0;
+          transform: translate(0, 0) scale(0) rotate(-30deg);
+        }
+        10% {
+          opacity: 1;
+          transform: translate(0, 0) scale(1) rotate(-30deg);
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-400px, -800px) scale(0.2) rotate(330deg);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .success-container {
+          padding: 2rem;
+        }
+
+        h1 {
+          font-size: 2.5rem;
+        }
+
+        p {
+          font-size: 1rem;
+        }
+
+        .timer,
+        .time-message {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+      <div class="loader"></div>
+    </div>
+
+    <div class="hearts" id="hearts"></div>
+    <div class="floating-hearts" id="floating-hearts"></div>
+
+    <div class="success-container">
+      <div class="heart-border"></div>
+      <h1>Beni Sevdiğini Biliyordum!</h1>
+
+      <!-- Video container added -->
+      <div class="video-container">
+        <video id="myVideo" autoplay loop muted>
+          <source src="C.mp4" type="video/mp4" />
+          Tarayıcınız video elementini desteklemiyor.
+        </video>
+      </div>
+
+      <div class="timer" id="timer">
+        <!-- Timer will be filled dynamically -->
+      </div>
+
+      <div class="time-message">
+        Birbirimizle konuşmaya başlayalı bunca zaman geçti...
+      </div>
+
+      <div class="date">
+        23.08.2021 tarihinde başlayan hikayemiz sonsuza kadar devam edecek
+        hayatım. istediğin zaman buradan geçen süreyi kontrol edebilirsin ❤️
+      </div>
+
+      <a href="index.html" class="button">Başa Dön</a>
+    </div>
+
+    <script>
+      // Preloader handling
+      document.addEventListener("DOMContentLoaded", function () {
+        // Show preloader
+        const preloader = document.getElementById("preloader");
+        const video = document.getElementById("myVideo");
+
+        // Hide preloader after video is loaded and start playing
+        video.addEventListener("canplaythrough", function () {
+          // Unmute video after loading to enable sound
+          video.muted = false;
+
+          // Make sure video plays
+          video.play().catch((e) => {
+            console.log("Autoplay prevented:", e);
+            // If autoplay with sound is blocked, we'll add a play button or message
+            video.muted = true;
+            video.play();
+          });
+
+          // Hide preloader with a small delay
+          setTimeout(() => {
+            preloader.classList.add("hidden");
+          }, 500);
+        });
+      });
+
+      // Timer functionality - Show time since 23.08.2021 22:08
+      const startDate = new Date("2021-08-23T22:08:00").getTime();
+      const timerElem = document.getElementById("timer");
+
+      function updateTimer() {
+        const now = Date.now();
+        const diff = now - startDate; // Time difference in milliseconds
+
+        // Calculate days, hours, minutes, seconds
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        // Update timer element
+        timerElem.innerHTML = `
+          <span>${days} gün, </span>
+          <span>${hours} saat, </span>
+          <span>${minutes} dakika, </span>
+          <span>${seconds} saniye </span>
+          <span>geçti...</span>
+        `;
+      }
+
+      // Initial timer update and set interval
+      updateTimer();
+      setInterval(updateTimer, 1000);
+
+      // Create floating hearts
+      function createHearts() {
+        const heartsContainer = document.getElementById("hearts");
+
+        // Define directions
+        const directions = [
+          { name: "bottom", x: 50, y: 0, angle: 0, animation: "float-heart" },
+          {
+            name: "bottom-left",
+            x: 10,
+            y: 0,
+            angle: 30,
+            animation: "float-heart-left",
+          },
+          {
+            name: "bottom-right",
+            x: 90,
+            y: 0,
+            angle: -30,
+            animation: "float-heart-right",
+          },
+        ];
+
+        // Create more hearts (100 instead of 50)
+        for (let i = 0; i < 100; i++) {
+          setTimeout(() => {
+            // Choose a random direction
+            const dirIndex = Math.floor(Math.random() * directions.length);
+            const direction = directions[dirIndex];
+
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+
+            // Randomize starting position
+            const randomOffset = Math.random() * 30 - 15; // -15 to 15
+            heart.style.left = `${direction.x + randomOffset}vw`;
+            heart.style.bottom = `${Math.random() * 10}vh`;
+
+            // Randomize size
+            const size = Math.random() * 30 + 20;
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+
+            // Add rotation
+            const rotationAngle = direction.angle + (Math.random() * 60 - 30); // ±30 degrees variation
+            heart.style.transform = `rotate(${rotationAngle}deg)`;
+
+            // Randomize animation duration
+            const duration = Math.random() * 4 + 3;
+            heart.style.animationDuration = `${duration}s`;
+            heart.style.animation = `${direction.animation} ${duration}s linear forwards`;
+
+            heartsContainer.appendChild(heart);
+
+            // Remove heart after animation completes
+            setTimeout(() => {
+              heart.remove();
+            }, duration * 1000 + 200);
+          }, i * 150);
+        }
+
+        // Continuously create new hearts
+        setInterval(() => {
+          // Choose a random direction
+          const dirIndex = Math.floor(Math.random() * directions.length);
+          const direction = directions[dirIndex];
+
+          const heart = document.createElement("div");
+          heart.classList.add("heart");
+
+          // Randomize position based on direction
+          const randomOffset = Math.random() * 30 - 15; // -15 to 15
+          heart.style.left = `${direction.x + randomOffset}vw`;
+          heart.style.bottom = `${Math.random() * 10}vh`;
+
+          // Randomize size
+          const size = Math.random() * 30 + 20;
+          heart.style.width = `${size}px`;
+          heart.style.height = `${size}px`;
+
+          // Add rotation
+          const rotationAngle = direction.angle + (Math.random() * 60 - 30);
+          heart.style.transform = `rotate(${rotationAngle}deg)`;
+
+          // Randomize animation
+          const duration = Math.random() * 4 + 3;
+          heart.style.animation = `${direction.animation} ${duration}s linear forwards`;
+
+          document.getElementById("hearts").appendChild(heart);
+
+          // Remove heart after animation
+          setTimeout(() => {
+            heart.remove();
+          }, duration * 1000 + 200);
+        }, 300);
+      }
+
+      // Create floating hearts (moving around)
+      function createFloatingHearts() {
+        const container = document.getElementById("floating-hearts");
+
+        // Create floating hearts that move around the page
+        for (let i = 0; i < 20; i++) {
+          const heart = document.createElement("div");
+          heart.classList.add("floating-heart");
+
+          // Random starting position
+          heart.style.left = `${Math.random() * 90}vw`;
+          heart.style.top = `${Math.random() * 90}vh`;
+
+          // Random size
+          const size = Math.random() * 20 + 10;
+          heart.style.width = `${size}px`;
+          heart.style.height = `${size}px`;
+
+          // Random opacity
+          heart.style.opacity = (Math.random() * 0.5 + 0.3).toString();
+
+          // Random animation duration and delay
+          heart.style.animationDuration = `${Math.random() * 10 + 10}s`;
+          heart.style.animationDelay = `-${Math.random() * 10}s`;
+
+          container.appendChild(heart);
+        }
+      }
+
+      // Start animations when page loads
+      document.addEventListener("DOMContentLoaded", () => {
+        createHearts();
+        createFloatingHearts();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yanlış Seçim!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        perspective: 1000px;
+      }
+
+      .negative-container {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(255, 105, 180, 0.3);
+        text-align: center;
+        width: 90%;
+        max-width: 500px;
+        position: relative;
+        animation: shake 0.5s ease-in-out;
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          transform: translateX(-10px);
+        }
+        20%,
+        40%,
+        60%,
+        80% {
+          transform: translateX(10px);
+        }
+      }
+
+      h1 {
+        font-family: "Dancing Script", cursive;
+        color: #ff5e87;
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .video-container {
+        margin: 1.5rem auto;
+        max-width: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      video {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 10px;
+      }
+
+      .emoji-row {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1.5rem 0;
+        font-size: 2rem;
+      }
+
+      .angry-emoji {
+        display: inline-block;
+        animation: pulse 0.8s infinite alternate;
+      }
+
+      @keyframes pulse {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.2);
+        }
+      }
+
+      .button {
+        background: linear-gradient(45deg, #ff758c, #ff7eb3);
+        color: white;
+        font-family: "Dancing Script", cursive;
+        font-size: 1.5rem;
+        padding: 0.8rem 1.8rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        margin-top: 1rem;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(255, 118, 140, 0.4);
+      }
+
+      .button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 7px 20px rgba(255, 118, 140, 0.6);
+      }
+
+      /* Preloader styles */
+      .preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 154, 158, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+
+      .preloader.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .loader {
+        width: 80px;
+        height: 80px;
+        border: 8px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #ff5e87;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Floating emojis effect */
+      #emojis-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .floating-emoji {
+        position: absolute;
+        font-size: 20px;
+        animation: floatEmoji 4s linear forwards;
+        opacity: 0;
+      }
+
+      @keyframes floatEmoji {
+        0% {
+          transform: translateY(100vh) scale(0.5) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-20vh) scale(1.5) rotate(360deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+      <div class="loader"></div>
+    </div>
+
+    <div class="negative-container">
+      <h1>Yanlış Cevap!</h1>
+
+      <div class="video-container">
+        <video id="myVideo" autoplay loop muted>
+          <source src="A.mp4" type="video/mp4" />
+          Tarayıcınız video elementini desteklemiyor.
+        </video>
+      </div>
+
+      <div class="emoji-row">
+        <span class="angry-emoji">😠</span>
+        <span class="angry-emoji">😤</span>
+        <span class="angry-emoji">😡</span>
+        <span class="angry-emoji">👿</span>
+        <span class="angry-emoji">😾</span>
+      </div>
+
+      <a href="question2.html?return=true" class="button" id="returnButton"
+        >Sorulara Tekrar Dön!</a
+      >
+    </div>
+
+    <div id="emojis-container"></div>
+
+    <script>
+      // Preloader handling
+      document.addEventListener("DOMContentLoaded", function () {
+        // Show preloader
+        const preloader = document.getElementById("preloader");
+        const video = document.getElementById("myVideo");
+
+        // Check if we have a referrer and it contains cok.html
+        const referrer = document.referrer;
+        const returnButton = document.getElementById("returnButton");
+        const urlParams = new URLSearchParams(window.location.search);
+        const hideCok = urlParams.get("hidecok");
+
+        // We need to check if:
+        // 1. We came directly from cok.html OR
+        // 2. We have hidecok parameter in our current URL
+        if ((referrer && referrer.includes("cok.html")) || hideCok === "true") {
+          // If either condition is true, preserve both hidecok and return parameters
+          returnButton.href = "question2.html?return=true&hidecok=true";
+        }
+
+        // Create floating emojis animation
+        const emojisContainer = document.getElementById("emojis-container");
+        const emojiSymbols = ["😠", "😤", "😡", "👿", "😾"];
+
+        function createFloatingEmoji() {
+          const emoji = document.createElement("div");
+          emoji.classList.add("floating-emoji");
+
+          // Random properties
+          emoji.style.left = Math.random() * 100 + "vw";
+          emoji.style.animationDuration = Math.random() * 3 + 3 + "s";
+          emoji.style.fontSize = Math.random() * 30 + 10 + "px";
+          emoji.innerHTML =
+            emojiSymbols[Math.floor(Math.random() * emojiSymbols.length)];
+
+          emojisContainer.appendChild(emoji);
+
+          // Remove emoji after animation completes
+          setTimeout(() => {
+            emoji.remove();
+          }, 6000);
+        }
+
+        // Create emojis periodically
+        setInterval(createFloatingEmoji, 300);
+
+        // Hide preloader after video is loaded and start playing
+        video.addEventListener("canplaythrough", function () {
+          // Unmute video after loading to enable sound
+          video.muted = false;
+
+          // Make sure video plays
+          video.play().catch((e) => {
+            console.log("Autoplay prevented:", e);
+            // If autoplay with sound is blocked, we'll add a play button or message
+            video.muted = true;
+            video.play();
+          });
+
+          // Hide preloader with a small delay
+          setTimeout(() => {
+            preloader.classList.add("hidden");
+          }, 500);
+        });
+      });
+    </script>
+  </body>
+</html>
